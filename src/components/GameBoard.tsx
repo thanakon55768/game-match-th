@@ -4,18 +4,22 @@ import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import MemoryCard from "./MemoryCard";
 import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 
 // Card icons using emoji for simplicity
 const cardIcons = [
   "🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼",
   "🐨", "🐯", "🦁", "🐮", "🐷", "🐸", "🐵", "🐔",
-  "🦄", "🐙", "🐬", "🦋", "🦀", "🐢", "🦖", "🦕"
+  "🦄", "🐙", "🐬", "🦋", "🦀", "🐢", "🦖", "🦕",
+  "🍎", "🍐", "🍊", "🍋", "🍌", "🍉", "🍇", "🍓",
+  "🍒", "🍑", "🥭", "🍍", "🥥", "🥝", "🍅", "🍆"
 ];
 
 interface GameBoardProps {
   difficulty: "easy" | "medium" | "hard";
   onGameComplete: (score: number, moves: number, time: number) => void;
   onMoveMade: () => void;
+  isPaused?: boolean;
 }
 
 interface CardType {
@@ -25,7 +29,7 @@ interface CardType {
   isMatched: boolean;
 }
 
-const GameBoard = ({ difficulty, onGameComplete, onMoveMade }: GameBoardProps) => {
+const GameBoard = ({ difficulty, onGameComplete, onMoveMade, isPaused = false }: GameBoardProps) => {
   const [cards, setCards] = useState<CardType[]>([]);
   const [flippedCards, setFlippedCards] = useState<number[]>([]);
   const [matchedPairs, setMatchedPairs] = useState<number>(0);
@@ -56,7 +60,7 @@ const GameBoard = ({ difficulty, onGameComplete, onMoveMade }: GameBoardProps) =
     }
     
     // Get a subset of icons for this game
-    const gameIcons = [...cardIcons].slice(0, pairs);
+    const gameIcons = [...cardIcons].sort(() => Math.random() - 0.5).slice(0, pairs);
     
     // Create pairs of cards
     let newCards: CardType[] = [];
@@ -92,11 +96,13 @@ const GameBoard = ({ difficulty, onGameComplete, onMoveMade }: GameBoardProps) =
     
     // Start game timer
     const interval = setInterval(() => {
-      setGameTime(prev => prev + 1);
+      if (!isPaused) {
+        setGameTime(prev => prev + 1);
+      }
     }, 1000);
     
     return () => clearInterval(interval);
-  }, [setupBoard]);
+  }, [setupBoard, isPaused]);
   
   // Check for game completion
   useEffect(() => {
@@ -114,18 +120,19 @@ const GameBoard = ({ difficulty, onGameComplete, onMoveMade }: GameBoardProps) =
       
       // Small delay for celebration
       setTimeout(() => {
-        toast.success("You've matched all the cards!");
+        toast.success("สำเร็จ! คุณจับคู่การ์ดทั้งหมดได้แล้ว");
         onGameComplete(Math.round(score), moves, gameTime);
       }, 500);
     }
-  }, [matchedPairs, cards.length, flippedCards.length, onGameComplete, gameTime]);
+  }, [matchedPairs, cards.length, flippedCards.length, onGameComplete, gameTime, onMoveMade]);
   
   // Handle card click
   const handleCardClick = (id: number) => {
-    // Ignore clicks if board is locked or card is already flipped/matched
+    // Ignore clicks if board is locked, paused, or card is already flipped/matched
     const clickedCard = cards.find(card => card.id === id);
     if (
       boardLocked || 
+      isPaused ||
       !clickedCard || 
       clickedCard.isFlipped || 
       clickedCard.isMatched ||
@@ -164,6 +171,7 @@ const GameBoard = ({ difficulty, onGameComplete, onMoveMade }: GameBoardProps) =
           setFlippedCards([]);
           setMatchedPairs(prev => prev + 1);
           setBoardLocked(false);
+          toast.success("จับคู่ได้ถูกต้อง!", { duration: 1000 });
         }, 500);
       } else {
         // No match, flip back after delay
@@ -189,17 +197,34 @@ const GameBoard = ({ difficulty, onGameComplete, onMoveMade }: GameBoardProps) =
   
   return (
     <div className="w-full max-w-3xl">
-      <div className={cn("grid gap-3", gridClass)}>
-        {cards.map(card => (
-          <MemoryCard
-            key={card.id}
-            icon={card.icon}
-            isFlipped={card.isFlipped}
-            isMatched={card.isMatched}
-            onClick={() => handleCardClick(card.id)}
-          />
-        ))}
-      </div>
+      {isPaused ? (
+        <motion.div 
+          className="bg-white/80 backdrop-blur-sm rounded-xl p-8 text-center shadow-lg"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+        >
+          <h2 className="text-3xl font-bold text-purple-800 mb-4">เกมถูกพักชั่วคราว</h2>
+          <p className="text-gray-600 mb-4">กดปุ่ม "เล่นต่อ" เพื่อดำเนินเกมต่อ</p>
+        </motion.div>
+      ) : (
+        <motion.div 
+          className={cn("grid gap-3", gridClass)}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          {cards.map(card => (
+            <MemoryCard
+              key={card.id}
+              icon={card.icon}
+              isFlipped={card.isFlipped}
+              isMatched={card.isMatched}
+              onClick={() => handleCardClick(card.id)}
+            />
+          ))}
+        </motion.div>
+      )}
     </div>
   );
 };
