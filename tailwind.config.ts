@@ -93,6 +93,5 @@ export default {
 			}
 		}
 	},
-	// ตรวจสอบให้แน่ใจว่ามีการระบุ plugin แบบถูกต้อง
 	plugins: [require("tailwindcss-animate")],
 } satisfies Config;
