@@ -120,7 +120,7 @@ const GameBoard = ({ difficulty, onGameComplete, onMoveMade, isPaused = false }:
       
       // Small delay for celebration
       setTimeout(() => {
-        toast.success("สำเร็จ! คุณจับคู่การ์ดทั้งหมดได้แล้ว");
+        toast.success("Success! You've matched all cards");
         onGameComplete(Math.round(score), moves, gameTime);
       }, 500);
     }
@@ -171,7 +171,7 @@ const GameBoard = ({ difficulty, onGameComplete, onMoveMade, isPaused = false }:
           setFlippedCards([]);
           setMatchedPairs(prev => prev + 1);
           setBoardLocked(false);
-          toast.success("จับคู่ได้ถูกต้อง!", { duration: 1000 });
+          toast.success("Match found!", { duration: 1000 });
         }, 500);
       } else {
         // No match, flip back after delay
@@ -204,8 +204,8 @@ const GameBoard = ({ difficulty, onGameComplete, onMoveMade, isPaused = false }:
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
         >
-          <h2 className="text-3xl font-bold text-purple-800 mb-4">เกมถูกพักชั่วคราว</h2>
-          <p className="text-gray-600 mb-4">กดปุ่ม "เล่นต่อ" เพื่อดำเนินเกมต่อ</p>
+          <h2 className="text-3xl font-bold text-purple-800 mb-4">Game Paused</h2>
+          <p className="text-gray-600 mb-4">Press "Resume" to continue playing</p>
         </motion.div>
       ) : (
         <motion.div 

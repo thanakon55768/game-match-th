@@ -35,7 +35,7 @@ const GameComplete = ({ score, moves, time, onRestart }: GameCompleteProps) => {
               animate={{ y: 0 }}
               transition={{ delay: 0.3, type: "spring" }}
             >
-              <CardTitle className="text-3xl font-bold">เกมสำเร็จ!</CardTitle>
+              <CardTitle className="text-3xl font-bold">Game Complete!</CardTitle>
             </motion.div>
           </CardHeader>
           <CardContent className="pt-6">
@@ -48,7 +48,7 @@ const GameComplete = ({ score, moves, time, onRestart }: GameCompleteProps) => {
               >
                 <span className="text-gray-600 flex items-center gap-2">
                   <Trophy className="h-5 w-5 text-yellow-500" />
-                  คะแนนสุดท้าย:
+                  Final Score:
                 </span>
                 <span className="text-2xl font-bold text-purple-700">{score}</span>
               </motion.div>
@@ -61,7 +61,7 @@ const GameComplete = ({ score, moves, time, onRestart }: GameCompleteProps) => {
               >
                 <span className="text-gray-600 flex items-center gap-2">
                   <Mouse className="h-5 w-5 text-blue-500" />
-                  จำนวนความพยายาม:
+                  Total Attempts:
                 </span>
                 <span className="text-lg font-medium">{moves}</span>
               </motion.div>
@@ -74,7 +74,7 @@ const GameComplete = ({ score, moves, time, onRestart }: GameCompleteProps) => {
               >
                 <span className="text-gray-600 flex items-center gap-2">
                   <Clock className="h-5 w-5 text-purple-500" />
-                  เวลา:
+                  Time:
                 </span>
                 <span className="text-lg font-medium">{formatTime(time)}</span>
               </motion.div>
@@ -90,7 +90,7 @@ const GameComplete = ({ score, moves, time, onRestart }: GameCompleteProps) => {
                 onClick={onRestart} 
                 className="w-full py-6 text-lg bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700"
               >
-                เล่นอีกครั้ง
+                Play Again
               </Button>
             </motion.div>
           </CardFooter>

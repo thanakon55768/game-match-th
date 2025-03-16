@@ -25,7 +25,7 @@ const Index = () => {
     setTimer(0);
     setGameCompleted(false);
     setIsPaused(false);
-    toast.success("เกมเริ่มต้นแล้ว! จับคู่การ์ดให้ครบทุกใบ");
+    toast.success("Game started! Match all cards to win.");
   };
 
   const restartGame = () => {
@@ -43,9 +43,9 @@ const Index = () => {
   const togglePause = () => {
     setIsPaused(prev => !prev);
     if (isPaused) {
-      toast.info("เกมดำเนินต่อแล้ว");
+      toast.info("Game resumed");
     } else {
-      toast.info("เกมถูกพักชั่วคราว");
+      toast.info("Game paused");
     }
   };
 

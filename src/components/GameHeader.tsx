@@ -47,12 +47,12 @@ const GameHeader = ({ moves, isPaused = false, onTogglePause }: GameHeaderProps)
           className="bg-white shadow py-2 px-4 text-lg"
         >
           {isPaused ? <Play className="h-5 w-5 mr-2" /> : <Pause className="h-5 w-5 mr-2" />}
-          {isPaused ? 'เล่นต่อ' : 'พัก'}
+          {isPaused ? 'Resume' : 'Pause'}
         </Button>
       )}
       
       <Badge variant="outline" className="text-lg bg-white shadow py-2 px-4">
-        ความพยายาม: {moves}
+        Attempts: {moves}
       </Badge>
     </div>
   );
