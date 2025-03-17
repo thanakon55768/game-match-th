@@ -4,7 +4,7 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 
 export default defineConfig(({ mode }) => ({
-  base: './', // 🛠️ แก้ให้ base อยู่ที่ root
+  base: mode === "development" ? "./" : "/", // 🛠️ แก้ให้ base อยู่ที่ root
   server: {
     host: "0.0.0.0", // หรือไม่ต้องกำหนด
     port: 8080,
