@@ -8,6 +8,9 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "0.0.0.0", // หรือไม่ต้องกำหนด
     port: 8080,
+    mimeTypes: {
+      "application/javascript": ["js", "ts", "tsx"] // ✅ เพิ่มการกำหนด MIME type
+    }
   },
   plugins: [
     react(),
